@@ -1,0 +1,81 @@
+{
+  "name": "clef-guard",
+  "version": "0.1.0",
+  "description": "Replaces the built-in auto-mode safety classifier with a local clef decision model",
+  "author": { "name": "mazar" },
+  "userConfig": {
+    "endpoint": {
+      "type": "string",
+      "title": "Endpoint",
+      "description": "URL of the Ollama /v1/systemone endpoint (mTLS ingress or loopback)",
+      "default": "http://localhost:11434/v1/systemone"
+    },
+    "model": {
+      "type": "string",
+      "title": "Model",
+      "description": "Decision model served at the endpoint",
+      "default": "clef"
+    },
+    "transport": {
+      "type": "string",
+      "title": "Transport",
+      "description": "curl shells out (supports mTLS and a hard timeout); http uses the engine's fetch",
+      "default": "curl",
+      "options": ["curl", "http"]
+    },
+    "caCert": {
+      "type": "string",
+      "title": "CA cert",
+      "description": "Path to the CA cert for the mTLS ingress (curl transport only; empty = none)",
+      "default": ""
+    },
+    "clientCert": {
+      "type": "string",
+      "title": "Client cert",
+      "description": "Path to the client cert the ingress expects (curl transport only; empty = none)",
+      "default": ""
+    },
+    "clientKey": {
+      "type": "string",
+      "title": "Client key",
+      "description": "Path to the client key the ingress expects (curl transport only; empty = none)",
+      "default": ""
+    },
+    "enforce": {
+      "type": "boolean",
+      "title": "Enforce",
+      "description": "When false, clef only annotates (status line) and never decides",
+      "default": true
+    },
+    "allowThreshold": {
+      "type": "number",
+      "title": "Allow threshold",
+      "description": "Minimum P(allow) for clef to allow a call",
+      "default": 0.7
+    },
+    "denyThreshold": {
+      "type": "number",
+      "title": "Deny threshold",
+      "description": "Minimum P(deny) for clef to deny a call",
+      "default": 0.7
+    },
+    "harmThreshold": {
+      "type": "number",
+      "title": "Harm threshold",
+      "description": "P(harm) at or above which a call is denied (and an allow is vetoed)",
+      "default": 0.5
+    },
+    "timeoutMs": {
+      "type": "number",
+      "title": "Timeout (ms)",
+      "description": "How long to wait for clef before falling back to the built-in decider",
+      "default": 8000
+    },
+    "maxStateChars": {
+      "type": "number",
+      "title": "State cap (chars)",
+      "description": "Cap on the serialized state sent to clef",
+      "default": 48000
+    }
+  }
+}
